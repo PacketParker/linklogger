@@ -56,7 +56,7 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "darwin"* ]]; then
     printf "${GREEN}Installing UI dependencies...${NC}\n"
     cd app || { printf "${RED}Failed to enter 'app' directory. Exiting.${NC}\n"; exit 1; }
     yarn install | head -n 5
-    yarn add vite | head -n 5
+    yarn add vite@^6 --dev | head -n 5
     cd .. || { printf "${RED}Failed to return to the previous directory. Exiting.${NC}\n"; exit 1; }
     printf "${GREEN}UI dependencies installed.${NC}\n"
 
