@@ -27,9 +27,9 @@ function check_python_version() {
     fi
 }
 
-# Function to check that pip is installed
+# Function to check if pip is installed
 function check_pip_installed() {
-    if ! command -v pip &> /dev/null; then
+    if ! $PYTHON_CMD -m pip --version &> /dev/null; then
         printf "${RED}Pip is not installed. Please install Pip before proceeding.${NC}\n"
         exit 1
     fi
@@ -51,6 +51,13 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "darwin"* ]]; then
     printf "${GREEN}Pip is installed.${NC}\n"
     check_yarn_installed
     printf "${GREEN}Yarn is installed.${NC}\n"
+
+    # Install the API dependencies
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+        $PYTHON_CMD -m pip install --break-system-packages -r requirements.txt
+    else
+        $PYTHON_CMD -m pip install -r requirements.txt
+    fi
 
     # Install the UI dependencies
     printf "${GREEN}Installing UI dependencies...${NC}\n"
