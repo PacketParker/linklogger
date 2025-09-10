@@ -6,3 +6,6 @@ internal_notes.txt
 config.yaml
 data
 docker-volume
+package.json
+package-lock.json
+node_modules/
