@@ -41,6 +41,7 @@ def authenticate_user(db, username: str, password: str):
     Determine if the correct username and password were provided
     If so, return the user object
     """
+    username = username.lower()
     user = get_user(db, username)
     if not user:
         return False

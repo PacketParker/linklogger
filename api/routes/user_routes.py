@@ -57,9 +57,7 @@ async def delete_user(
         )
 
     # Delete all links and logs associated with the user
-    links = (
-        db.query(LinkModel).filter(LinkModel.owner == current_user.id).all()
-    )
+    links = db.query(LinkModel).filter(LinkModel.owner == current_user.id).all()
     for link in links:
         db.delete(link)
         logs = db.query(LogModel).filter(LogModel.link == link.link).all()
@@ -88,9 +86,7 @@ async def update_pass(
         )
 
     # Make sure that they entered the correct current password
-    if not verify_password(
-        update_data.current_password, current_user.hashed_password
-    ):
+    if not verify_password(update_data.current_password, current_user.hashed_password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect current password",
@@ -122,7 +118,7 @@ async def get_links(
     Given the login data (username, password) process the registration of a new
     user account and return either the user or an error message
     """
-    username = form_data.username
+    username = form_data.username.lower()
     password = form_data.password
 
     # Make sure the password meets all of the requirements
@@ -136,12 +132,10 @@ async def get_links(
             detail="Username not available",
         )
     # Otherwise, hash the password, create the api key, and add the new user
-    hashed_password = bcrypt.hashpw(
-        password.encode("utf-8"), bcrypt.gensalt()
-    ).decode("utf-8")
-    api_key = "".join(
-        random.choices(string.ascii_letters + string.digits, k=20)
+    hashed_password = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt()).decode(
+        "utf-8"
     )
+    api_key = "".join(random.choices(string.ascii_letters + string.digits, k=20))
     new_user = UserModel(
         username=username, hashed_password=hashed_password, api_key=api_key
     )
