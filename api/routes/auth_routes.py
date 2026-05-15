@@ -35,7 +35,7 @@ async def login_for_access_token(
         )
     access_token_expires = timedelta(minutes=180)
     access_token = create_access_token(
-        data={"sub": user.id, "username": user.username},
+        data={"sub": str(user.id), "username": user.username},
         expires_delta=access_token_expires,
     )
     response = JSONResponse(content={"success": True})
